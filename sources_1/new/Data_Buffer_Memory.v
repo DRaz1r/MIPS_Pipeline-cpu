@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 `include "Header.vh"
 module Data_Buffer_Memory(
     input[31:0] i_data,

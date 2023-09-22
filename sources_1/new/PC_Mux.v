@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module PC_Mux(
     input [31:0] NPC,
     input [31:0] J_PC,

@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module J_Mod(
     input [25:0] instr_index,
     input [31:0] NPC,

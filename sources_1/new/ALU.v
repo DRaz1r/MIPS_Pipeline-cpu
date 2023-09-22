@@ -1,9 +1,12 @@
+`timescale 1ns / 1ps
+
 `include "Header.vh"
 module alu (
     input  [31:0]   A   ,
     input  [31:0]   B   ,
     input  [5 :0]   AluOP,
     output Zero,
+    output [1:0] Movz_Flag,
     output [31:0]   F  
 );
 
@@ -23,6 +26,7 @@ module alu (
     assign a_and_b_result = A & B;
     assign a_xor_b_result = A ^ B;
     assign a_slt_b_result = (A < B) ? 32'b1 : 32'b0;
+    assign Movz_Flag = { {(B == 0)}, {(AluOP == `MOVZ)} };
     assign movz_result = (B == 0) ? A : 32'b0;
     wire [4:0] shamt;
     assign shamt = A[4:0];

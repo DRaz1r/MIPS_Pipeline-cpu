@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module AluSrcA_Mux(
     input [31:0] EX_Reg1,
     input [31:0] MEM_AluResult,

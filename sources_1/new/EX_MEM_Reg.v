@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 `include "Header.vh"
 
 module EX_MEM_Reg(
@@ -14,8 +16,7 @@ module EX_MEM_Reg(
     input [31:0] EX_WriteData,
     input [31:0] EX_AluResult,
 
-    input [5:0] EX_AluOP,
-    input Zero, // These two signals are for the MOVZ instruction, controlling the RegWrite signal
+    input [1:0] Movz_Flag,
 
     //rd
     input [4:0] EX_rd,
@@ -48,7 +49,7 @@ module EX_MEM_Reg(
             MEM_Instr <= 0;
         end
         else begin
-            MEM_RegWrite <= (EX_AluOP == `MOVZ) ? (EX_RegWrite & ~Zero) : EX_RegWrite;
+            MEM_RegWrite <=  Movz_Flag == 2'b01 ? 0 : EX_RegWrite; // 注意：MOVZ指令当[rt] != 0时，不对寄存器rd进行任何写回操作。
 
             MEM_MemToReg <= EX_MemToReg;
             MEM_MemWrite <= EX_MemWrite;

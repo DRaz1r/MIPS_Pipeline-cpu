@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module SigExt(
     input [15:0] offset,
     output [31:0] Imm

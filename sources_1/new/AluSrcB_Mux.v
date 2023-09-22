@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module AluSrcB_Mux(
     input [1:0] AluSrcB_Sel,
     input EX_AluSrcB,

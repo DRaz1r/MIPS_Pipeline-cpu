@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module WB_Mux(
     input [31:0] WB_AluResult,
     input [31:0] WB_ReadData,

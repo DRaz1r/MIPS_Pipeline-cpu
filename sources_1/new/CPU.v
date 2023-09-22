@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module CPU (
     input            clk             ,  // clock, 100MHz
     input            reset_n          ,  // active low
@@ -19,6 +21,8 @@ module CPU (
     wire [31:0] IF_Instr, ID_Instr, EX_Instr, MEM_Instr, WB_Instr; // Instruction for debug
     wire [31:0] IF_PC, ID_PC, EX_PC, MEM_PC, WB_PC; // PC for debug
 
+    // IF Stage
+    wire [31:0] IF_NPC;
 
     // ID Stage
     wire ID_RegWrite, ID_MemToReg, ID_MemWrite, ID_Branch, ID_AluSrcB, ID_AluSrcA, ID_Jump;
@@ -33,6 +37,7 @@ module CPU (
     // EX Stage
     wire [4:0] EX_rs, EX_rt, EX_rd;
     wire EX_RegWrite, EX_MemToReg, EX_MemWrite, EX_Branch, EX_AluSrcB, EX_AluSrcA, EX_Jump;
+    wire [1:0] Movz_Flag;
     wire [5:0] EX_AluOP;
     wire [31:0] EX_Imm, EX_Reg1, EX_Reg2;
     wire [4:0] EX_WriteReg;
@@ -254,8 +259,7 @@ module CPU (
 
     WriteData_Mux  u_WriteData_Mux (
         .EX_Reg2                 ( EX_Reg2         ),
-        .WriteBackData           ( WriteBackData   ),
-        .MEM_ReadData            ( MEM_ReadData   ),
+        .WB_ReadData             ( WB_ReadData   ),
         .WriteData_Sel           ( WriteData_Sel   ),
 
         .EX_WriteData            ( EX_WriteData    )
@@ -267,6 +271,7 @@ module CPU (
         .AluOP                   ( EX_AluOP     ),
 
         .Zero                    ( Zero         ),
+        .Movz_Flag               ( Movz_Flag    ),
         .F                       ( EX_AluResult )
     );
 
@@ -283,8 +288,8 @@ module CPU (
         .EX_rd                   ( EX_rd           ),
         .EX_rt                   ( EX_rt           ),
         .EX_PC                   ( EX_PC           ),
-        .EX_AluOP                ( EX_AluOP        ),
-        .Zero                    ( Zero            ), 
+        .Movz_Flag               ( Movz_Flag       ),
+
 
         .MEM_PC                  ( MEM_PC          ),
         .MEM_Instr               ( MEM_Instr       ),
@@ -349,7 +354,6 @@ module CPU (
         .EX_Jump                 ( EX_Jump       ),
         .EX_Branch               ( EX_Branch     ),
         .Zero                    ( Zero          ),
-        .ID_MemWrite             ( ID_MemWrite   ),
 
         .stall                   ( stall         ),
         .flush                   ( flush         )

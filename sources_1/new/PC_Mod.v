@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module PC_Mod(
     input clk,     // 时钟
     input reset_n, // 是否重置地址。0-初始化PC，否则接受新地址     

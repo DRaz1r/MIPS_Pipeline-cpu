@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module WriteReg_Mux(
     input [4:0] rt,
     input [4:0] rd,

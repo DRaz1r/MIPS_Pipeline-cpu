@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module IF_ID_Reg(
     input [31:0] IF_Instr,
     input clk,

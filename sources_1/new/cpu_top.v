@@ -12,6 +12,8 @@ module cpu_top(
     reg [71:0] trace_data [`TEST_COUNT - 1 :0];
 
     initial begin
+        $display("Test Count: %d", `TEST_COUNT);
+        $display("Test Final PC: 0x%8h", `TEST_FINAL_PC);
         $readmemh(`TRACE_FILE_PATH , trace_data);
     end
 
@@ -23,7 +25,7 @@ module cpu_top(
 
     CPU CPU_u(
         .clk               (clk               ),
-        .reset_n            (reset             ),
+        .reset_n           (reset             ),
         .debug_wb_pc       (debug_wb_pc       ),
         .debug_wb_rf_wen   (debug_wb_rf_wen   ),
         .debug_wb_rf_addr  (debug_wb_rf_addr  ),
@@ -49,7 +51,7 @@ module cpu_top(
             test_pass    <= 1'b0;
             test_counter <= 0;
         end
-        else if (debug_wb_pc == `TEST_FINAL_PC && !test_err && test_counter==`TEST_COUNT - 1) begin
+        else if (debug_wb_pc == `TEST_FINAL_PC && !test_err && test_counter == `TEST_COUNT - 1 ) begin
                 $display("    ----PASS!!!");
                 $display("Test end!");
                 $display("==============================================================");

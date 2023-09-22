@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 `include "Header.vh"
 module regfile(
     input clk,
