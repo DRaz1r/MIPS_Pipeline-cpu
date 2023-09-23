@@ -62,6 +62,9 @@ module CPU (
     wire [31:0] WB_ReadData;
     wire [31:0] WriteBackData;
 
+    // DataBufferMemory
+    wire [31:0] MEM_i_data;
+
     // Forwardinng Unit
     wire [1:0] AluSrcA_Sel, AluSrcB_Sel;
     wire [1:0] WriteData_Sel;
@@ -257,13 +260,14 @@ module CPU (
         .SrcB                    ( SrcB            )
     );
 
-    WriteData_Mux  u_WriteData_Mux (
-        .EX_Reg2                 ( EX_Reg2         ),
-        .WB_ReadData             ( WB_ReadData   ),
-        .WriteData_Sel           ( WriteData_Sel   ),
+    WriteData_Mux0  WriteData_Mux0_u (
+        .EX_Reg2                 ( EX_Reg2           ),
+        .WB_ReadData             ( WB_ReadData       ),
+        .WriteData_Sel_0         ( WriteData_Sel[0]   ),
 
-        .EX_WriteData            ( EX_WriteData    )
+        .EX_WriteData            ( EX_WriteData      )
     );
+    
 
     alu  alu_u (
         .A                       ( SrcA         ),
@@ -302,9 +306,18 @@ module CPU (
         .MEM_WriteData           ( MEM_WriteData   ),
         .MEM_AluResult           ( MEM_AluResult   )
     );
+
+  
+    WriteData_Mux1  WriteData_Mux1_u (
+        .MEM_WriteData           (  MEM_WriteData    ),
+        .WB_ReadData             ( WB_ReadData       ),
+        .WriteData_Sel_1         ( WriteData_Sel[1]  ),
+
+        .MEM_i_data              ( MEM_i_data        )
+    );
    
    Data_Buffer_Memory  Data_Buffer_Memory_u (
-        .i_data                  ( MEM_WriteData ),
+        .i_data                  ( MEM_i_data    ),
         .addr                    ( MEM_AluResult ),
         .we                      ( MEM_MemWrite  ),
         .clk                     ( clk      ),
@@ -348,6 +361,7 @@ module CPU (
 
     HazardUnit  HazardUnit_u (
         .EX_MemToReg             ( EX_MemToReg   ),
+        .ID_MemWrite             ( ID_MemWrite   ),
         .EX_rt                   ( EX_rt         ),
         .ID_rs                   ( ID_rs         ),
         .ID_rt                   ( ID_rt         ),

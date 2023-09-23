@@ -3,6 +3,7 @@
 
 module HazardUnit(
     input EX_MemToReg,
+    input ID_MemWrite,
     input [4:0] EX_rt,
     input [4:0] ID_rs,
     input [4:0] ID_rt,
@@ -14,8 +15,8 @@ module HazardUnit(
     output flush
     );                                                              
     // load-use Hazard
-    // Attention: Save after Load need to be stalled 
-    assign stall = ( (EX_MemToReg ) && ((EX_rt == ID_rs) || (EX_rt == ID_rt)) ) | 0;
+    // Attention: Save after Load Can be solved by Forwarding 
+    assign stall = ( (EX_MemToReg ) && (~ID_MemWrite) && ((EX_rt == ID_rs) || (EX_rt == ID_rt)) ) | 0;
     
     assign flush = (EX_Jump && ((Zero == 0) && EX_Branch)) | 0;
     // Jump Hazard & Branch Hazard

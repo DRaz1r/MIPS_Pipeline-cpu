@@ -34,7 +34,9 @@ module ForwardUnit(
                          ( WB_RegWrite  &  WB_MemToReg    & (~EX_MemWrite)& (WB_rt != 0)  & (WB_rt == EX_rs) ) ? 2'b10 : // load-use
                         2'b00;
 
-    // Save after load need stall
-    assign WriteData_Sel = ( WB_RegWrite  &  WB_MemToReg & EX_MemWrite & (WB_rt != 0)  & (WB_rt == EX_rt)  ) ? 2'b01 :
-                           2'b10;
+    // Save after load 
+    assign WriteData_Sel[0] = ( WB_RegWrite  &  WB_MemToReg & EX_MemWrite & (WB_rt != 0)  & (WB_rt == EX_rt)  ) ? 1'b1 :
+                           1'b0;
+    assign WriteData_Sel[1] = ( WB_RegWrite  &  WB_MemToReg & MEM_MemWrite & (WB_rt != 0)  & (WB_rt == MEM_rt)  ) ? 1'b1 :
+                           1'b0;                    
 endmodule

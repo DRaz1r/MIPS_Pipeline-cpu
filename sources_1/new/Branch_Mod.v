@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module Branch_Mod(
     input [31:0] Imm,
     input [31:0] NPC,
